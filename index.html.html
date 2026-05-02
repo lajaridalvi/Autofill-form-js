@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Auto-Fill Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 5px rgba(102,126,234,0.5);
+    }
+
+    .error {
+      border-color: red !important;
+    }
+
+    .message {
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    #hintMsg {
+      color: #666;
+    }
+
+    #errorMsg {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Customer Lookup</h2>
+
+    <div class="input-group">
+      <input type="text" id="customerId" placeholder="Enter Customer ID">
+      
+      <div id="errorMsg" class="message"></div>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="name" placeholder="Name">
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="email" placeholder="Email">
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="phone" placeholder="Phone">
+    </div>
+  </div>
+
+  <script>
+    const customers = [
+      { id: "101", name: "Rahul Sharma", email: "rahul.sharma@gmail.com", phone: "9876543210" },
+      { id: "102", name: "Sneha Patil", email: "sneha.patil@gmail.com", phone: "9123456780" },
+      { id: "103", name: "Amit Verma", email: "amit.verma@gmail.com", phone: "9988776655" },
+      { id: "104", name: "Priya Singh", email: "priya.singh@gmail.com", phone: "9090909090" },
+      { id: "105", name: "Karan Mehta", email: "karan.mehta@gmail.com", phone: "9871234567" },
+      { id: "106", name: "Neha Joshi", email: "neha.joshi@gmail.com", phone: "9812345678" },
+      { id: "107", name: "Rohit Gupta", email: "rohit.gupta@gmail.com", phone: "9765432109" },
+      { id: "108", name: "Anjali Desai", email: "anjali.desai@gmail.com", phone: "9654321098" },
+      { id: "109", name: "Vikas Yadav", email: "vikas.yadav@gmail.com", phone: "9543210987" },
+      { id: "110", name: "Pooja Nair", email: "pooja.nair@gmail.com", phone: "9432109876" },
+      { id: "111", name: "Suresh Kumar", email: "suresh.kumar@gmail.com", phone: "9321098765" },
+      { id: "112", name: "Meena Iyer", email: "meena.iyer@gmail.com", phone: "9210987654" },
+      { id: "113", name: "Arjun Reddy", email: "arjun.reddy@gmail.com", phone: "9109876543" },
+      { id: "114", name: "Kavita Shah", email: "kavita.shah@gmail.com", phone: "9098765432" },
+      { id: "115", name: "Deepak Chauhan", email: "deepak.chauhan@gmail.com", phone: "9987654321" },
+      { id: "116", name: "Nisha Kapoor", email: "nisha.kapoor@gmail.com", phone: "9876501234" },
+      { id: "117", name: "Manish Agarwal", email: "manish.agarwal@gmail.com", phone: "9765012345" },
+      { id: "118", name: "Ritu Malhotra", email: "ritu.malhotra@gmail.com", phone: "9650123456" },
+      { id: "119", name: "Sanjay Mishra", email: "sanjay.mishra@gmail.com", phone: "9543012345" },
+      { id: "120", name: "Alok Pandey", email: "alok.pandey@gmail.com", phone: "9432012345" }
+    ];
+
+    let timer;
+
+    const idInput = document.getElementById('customerId');
+    const errorMsg = document.getElementById('errorMsg');
+    const hintMsg = document.getElementById('hintMsg');
+
+    idInput.addEventListener('input', function () {
+      clearTimeout(timer);
+
+      timer = setTimeout(() => {
+        const id = this.value.trim();
+        const customer = customers.find(c => c.id === id);
+
+        if (id === "") {
+          clearFields();
+          errorMsg.textContent = "";
+          hintMsg.style.display = "block";
+          idInput.classList.remove('error');
+          return;
+        }
+
+        if (customer) {
+          fillFields(customer);
+          errorMsg.textContent = "";
+          hintMsg.style.display = "none";
+          idInput.classList.remove('error');
+        } else {
+          clearFields();
+          errorMsg.textContent = "❌ Invalid ID. Please try 101–120";
+          hintMsg.style.display = "block";
+          idInput.classList.add('error');
+        }
+
+      }, 300);
+    });
+
+    function fillFields(customer) {
+      document.getElementById('name').value = customer.name;
+      document.getElementById('email').value = customer.email;
+      document.getElementById('phone').value = customer.phone;
+    }
+
+    function clearFields() {
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+    }
+  </script>
+
+</body>
+</html>
